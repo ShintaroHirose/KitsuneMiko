@@ -28,6 +28,10 @@ public class Death : MonoBehaviour {
     }
 
     protected virtual void FixedUpdate () {
+        if (gameObject.CompareTag("Player"))
+        {
+            gameObject.GetComponent<PlayerEffectManager>().ShowPlayerEffect("Death");
+        }
         Destroy(gameObject);
     }
 }

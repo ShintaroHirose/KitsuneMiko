@@ -10,7 +10,7 @@ public class CameraManager : MonoBehaviour
     public GameObject outZone;
 
 
-    private Camera camera;
+    private Camera _camera;
     private const float FRAME_HALF_WIDTH = 0.5f;
     Vector3 p1, p2, cameraPos;
     private float distans;
@@ -19,37 +19,39 @@ public class CameraManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        camera = gameObject.GetComponent<Camera>();
+        _camera = gameObject.GetComponent<Camera>();
         cameraPos = new Vector3(player.transform.position.x, transform.position.y, transform.position.z);
-        camera.transform.position = cameraPos;//初期カメラ位置をプレイヤー座標に設定
-        p1 = camera.ViewportToWorldPoint(new Vector3(0, 0.5f, camera.nearClipPlane));//ビューポイント座標をワールド座標に変更
+        _camera.transform.position = cameraPos;//初期カメラ位置をプレイヤー座標に設定
+        p1 = _camera.ViewportToWorldPoint(new Vector3(0, 0.5f, _camera.nearClipPlane));//ビューポイント座標をワールド座標に変更
         distans = player.transform.position.x - p1.x;//プレイヤー座標と画面端の距離を取得
     }
 
     // Update is called once per frame
     void Update()
     {
-        cameraPos.x = player.transform.position.x;//デフォルトではプレイヤー座標に合わせてカメラ座標を更新
-        cameraPos.y = player.transform.position.y;
-
-        if (player.transform.position.y < (outZone.transform.position.y + distansY))//カメラ下限設定
+        if (player != null)
         {
+            cameraPos.x = player.transform.position.x;//デフォルトではプレイヤー座標に合わせてカメラ座標を更新
+            cameraPos.y = player.transform.position.y;
 
-            cameraPos.y = outZone.transform.position.y + distansY;
+            if (player.transform.position.y < (outZone.transform.position.y + distansY))//カメラ下限設定
+            {
+
+                cameraPos.y = outZone.transform.position.y + distansY;
+            }
+
+            if ((player.transform.position.x - distans) <
+                (outFrameLeft.transform.position.x + FRAME_HALF_WIDTH))//プレイヤーが左端に位置する場合
+            {
+                cameraPos.x = outFrameLeft.transform.position.x + FRAME_HALF_WIDTH + distans;//カメラを左枠から離れた位置に固定　
+            }
+            else if ((outFrameRight.transform.position.x - FRAME_HALF_WIDTH) <
+               (player.transform.position.x + distans))//プレイヤーが右端に位置する場合
+            {
+                cameraPos.x = outFrameRight.transform.position.x - FRAME_HALF_WIDTH - distans;//カメラを右枠から離れた位置に固定
+            }
+
+            _camera.transform.position = cameraPos;//カメラ座標の更新
         }
-
-        if ((player.transform.position.x - distans) <
-            (outFrameLeft.transform.position.x + FRAME_HALF_WIDTH))//プレイヤーが左端に位置する場合
-        {
-            cameraPos.x = outFrameLeft.transform.position.x + FRAME_HALF_WIDTH + distans;//カメラを左枠から離れた位置に固定　
-        }
-        else if ((outFrameRight.transform.position.x - FRAME_HALF_WIDTH) <
-           (player.transform.position.x + distans))//プレイヤーが右端に位置する場合
-        {
-            cameraPos.x = outFrameRight.transform.position.x - FRAME_HALF_WIDTH - distans;//カメラを右枠から離れた位置に固定
-        }
-
-
-        camera.transform.position = cameraPos;//カメラ座標の更新
     }
 }
