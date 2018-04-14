@@ -30,7 +30,7 @@ public class ButtonManager : MonoBehaviour {
         //ゲームスタート
         if(button.name == "StartButton")
         {
-            SceneManager.LoadScene("Stage1");
+            SceneManager.LoadScene("GameScene1");
         }
 
         //ゲーム終了

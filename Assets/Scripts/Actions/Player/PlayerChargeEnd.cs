@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerChargeEnd : Action
-{
+public class PlayerChargeEnd : Action {
 
     public GameObject captureBox;
     Animator animator;
     bool _IsDone = false;
-    public override bool IsDone()
-    {
+	public override bool IsDone()
+	{
         return _IsDone;
     }
 
@@ -18,14 +17,10 @@ public class PlayerChargeEnd : Action
         animator = gameObject.GetComponent<Animator>();
     }
 
-    public override void Act(Dictionary<string, object> args)
-    {
+	public override void Act(Dictionary<string, object> args)
+	{
         animator.SetBool("isCharging", false);
-        gameObject.GetComponent<PlayerEffectManager>().HidePlayerEffect("Charging");
-        if ((bool)args["isFullyCharged"])
-        {
-            animator.SetTrigger("release");
-        }
+        animator.SetTrigger("release");
         gameObject.GetComponent<PlayerChargeEndCondition>().Deactivate();
     }
 

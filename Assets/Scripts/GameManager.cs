@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         DontDestroyOnLoad(gameObject);
-        SceneManager.LoadScene("UI", LoadSceneMode.Additive);
         audioSource = this.gameObject.GetComponent<AudioSource>();
     }
 

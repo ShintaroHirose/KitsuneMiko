@@ -93,16 +93,9 @@ public class UIManager : MonoBehaviour {
         hpDamageBar.minValue = 0;
         hpDamageBar.value = MAX_HP;
 
-        //mpDamageBar.maxValue = MAX_MP;
-        //mpDamageBar.minValue = 0;
-        //mpDamageBar.value = MAX_MP;
-
         hpText.text = hpBar.value + "/" + MAX_HP;
         mpText.text = mpBar.value + "/" + MAX_MP;
-
-        //MPを1減らすフレーム数を設定
-        fnum = 10;
-
+        
         //鞄スプライト設定
         bag.sprite = bagSprite;
     }
@@ -115,35 +108,12 @@ public class UIManager : MonoBehaviour {
         //ここでは強引にifで囲っている
         if (pauseManager.GetComponent<PauseManager>().isPause == false)
         {
-            //test
-            if (Input.GetKeyDown(KeyCode.K))
-            {
-                SetHP(80);
-                DecreaseMP(MAX_MP);
-                if (hp > MAX_HP) hp = MAX_HP;
-            }
-
-            if (Input.GetKeyDown(KeyCode.B))
-            {
-                //SetBagImage("item1");
-                SetHP(-10);
-                if (hp < 0) hp = 0;
-            }
-            //test end
-
             //hp管理
             if (hp < 0) hp = 0;
 
             if (hpBar.value != hp)
             {
-                if (hpBar.value > hp)
-                {
-                    hpBar.value = hp;
-                }
-                else
-                {
-                    hpBar.value = hp;
-                }
+                hpBar.value = hp;
                 hpText.text = hpBar.value + "/" + MAX_HP;
             }
 
@@ -156,22 +126,9 @@ public class UIManager : MonoBehaviour {
             //mp管理
             if (mpBar.value != mp)
             {
-                if (mpBar.value > mp)
-                {
-                    if (num >= fnum)
-                    {
-                        mpBar.value -= 1;
-                        num = 0;
-                    }
-                }
-                else
-                {
-                    mpBar.value += 1;
-                }
+                mpBar.value = mp;
                 mpText.text = mpBar.value + "/" + MAX_MP;
             }
-            
-            num++;
         }
 	}
     
@@ -319,5 +276,6 @@ public class UIManager : MonoBehaviour {
     void FixedUpdate()
     {
         SetHP(player.GetComponent<Breakable>().hitPoint);
+        //SetMP()
     }
 }
